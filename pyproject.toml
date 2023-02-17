@@ -1,0 +1,19 @@
+[tool.pdm]
+
+[project]
+name = "envintegration"
+version = "0.1.0"
+description = "Integration of the external environment of users into the ecosystem of their digital assistants"
+authors = [
+    {name = "Denis Kuznetsov", email = "wvxp@mail.ru"},
+    {name = "Danila Korobkov", email = "danila.korobkov@yandex.ru"},
+    {name = "Andrew Laptev", email = "nickname.avast@gmail.com"},
+]
+dependencies = []
+requires-python = "~=3.10.6"
+readme = "README.md"
+license = {text = ""}
+
+[build-system]
+requires = ["pdm-pep517>=1.0"]
+build-backend = "pdm.pep517.api"

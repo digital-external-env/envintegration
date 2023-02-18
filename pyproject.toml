@@ -7,7 +7,17 @@ authors = [
     { name = "Danila Korobkov", email = "danila.korobkov@yandex.ru" },
     { name = "Andrew Laptev", email = "nickname.avast@gmail.com" },
 ]
-dependencies = ["aiohttp~=3.8.3", "requests~=2.28.2", "python-dotenv~=0.21.1"]
+dependencies = [
+    "aiohttp~=3.8.3",
+    "requests~=2.28.2",
+    "python-dotenv~=0.21.1",
+    "pymorphy2~=0.9.1",
+    "torch~=1.13.1",
+    "torchvision~=0.14.1",
+    "torchaudio~=0.13.1",
+    "transformers~=4.26.1",
+    "gdown~=4.6.3",
+]
 requires-python = "~=3.10.6"
 readme = "README.md"
 license = { text = "" }
@@ -33,6 +43,9 @@ test = [
     "pytest-randomly~=3.12.0",
     "pytest-cov~=4.0.0",
 ]
+
+[tool.pdm.scripts]
+post_install = "gdown https://drive.google.com/uc?id=1G6DBfLvrW_g_WlXJd-dFxNv9Zm8GrAVY -O pes_digenv/text_emotion/models/emotion-detection/"
 
 [tool.black]
 line-length = 80
@@ -60,6 +73,14 @@ warn_return_any = true
 warn_redundant_casts = true
 strict_equality = true
 explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+module = "transformers.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "pymorphy2.*"
+ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 module = "tests.*"

@@ -136,3 +136,6 @@ dmypy.json
 
 # PDM
 .pdm.toml
+
+# Custom
+pes_digenv/text_emotion/models/emotion-detection/pytorch_model.bin

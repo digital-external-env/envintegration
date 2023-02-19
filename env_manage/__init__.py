@@ -1,4 +1,4 @@
-from .yandex import YandexApi
+from .yandex.api import YandexApi
 
 
 __all__ = ["YandexApi"]

@@ -4,9 +4,6 @@
   </a>
 </div>
 
-
-# envintegration
-
 ## About
 
 This library was created to develop solutions in the field of integrating the external environment of users into the ecosystem of their digital assistants. The library consists of several modules:

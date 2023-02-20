@@ -305,6 +305,7 @@ The library was developed in:
  - Daria Klimova - researcher
  - Anna Egamova - researcher
  - Mikhail Sinko - ml-developer
+ - Valery Volokha - ml-developer
  - Timur Samigulin - ml-developer
  - Oleg Demin - ml-developer
  - Tatiana Polonskaya - ml-developer

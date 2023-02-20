@@ -6,6 +6,9 @@ authors = [
     { name = "Denis Kuznetsov", email = "wvxp@mail.ru" },
     { name = "Danila Korobkov", email = "danila.korobkov@yandex.ru" },
     { name = "Andrew Laptev", email = "nickname.avast@gmail.com" },
+    { name = "Timur Samigulin", email = "timursamigulin98@gmail.com" },
+    { name = "Timur Samigulin", email = "timursamigulin98@gmail.com" },
+    { name = "Valery Volokha", email = "valierii.volokha@gmail.com" },
 ]
 dependencies = [
     "aiohttp~=3.8.3",

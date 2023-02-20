@@ -2,4 +2,169 @@
 
 ## About
 
-Integration of the external environment of users into the ecosystem of their digital assistants
+This library was created to develop solutions in the field of integrating the external environment of users into the ecosystem of their digital assistants. The library consists of several modules:
+ * pes_env - for obtaining data on the psychoemotional state of the user from the physical environment
+ * pes_digenv - for obtaining data on the psychoemotional state of the user from the digital environment
+ * env_manage - for controlling the parameters of the external environment
+ * digital_hygiene - for provide filtering of negative manifestations of the physical (projected) and digital external environment of users
+
+## Built With
+
+* [![Python][python-shield]][python-url]
+* [![PDM][pdm-shield]][pdm-url]
+
+## Requirements
+
+* Python ~=3.10.6
+* PDM ~=2.4.2 or pip ~=22.0
+
+## Getting started
+
+### Prerequisites
+
+Before you start, you need to register your application with the [yandex authentication system](https://oauth.yandex.ru)
+
+After that, using the received token, following
+the [instruction](https://yandex.ru/dev/id/doc/dg/oauth/concepts/about.html), you need to get the client_token to work
+with the API
+
+### Installation
+
+  ```sh
+  pdm add git+ssh://github.com/digital-external-env/envintegration.git
+  ```
+  ```sh
+  pip install git+ssh://github.com/digital-external-env/envintegration.git
+  ````
+
+## env_manage
+The library contains methods for obtaining information about the smart home, smart home devices and managing these
+devices.
+Library methods allow you to separately manage smart home devices using the YandexApi class. The YandexSession/YandexSessionAsync class is used to control smart speakers.
+The library provides convenient direct access to device objects that allow you to access device-accessible methods
+### Smart devices
+
+You must create an instance of the Yandex API class by specifying in the client_token attribute a token received by
+instructions
+
+```python
+from envintegration import YandexApi
+
+api = YandexApi(client_token=client_token)
+```
+
+#### Examples
+
+###### Getting Smart Home Information
+
+```python
+api.get_smart_home_info()
+```
+
+To simplify the operation, direct access to devices is implemented by creating an instance of the device class, and also
+to methods available for devices, obtaining properties, abilities and information about the device.
+
+(Note that all methods except set_id are asynchronous)
+
+###### Getting device information and device management
+
+```python
+my_purifer = api.purifer.set_id(device_id='')
+my_purifer.info()
+my_purifer.on_off(value=True)
+
+my_vacuum_cleaner = api.purifer.set_id(device_id='')
+my_vacuum_cleaner.get_capabilities()
+my_vacuum_cleaner.mode(value='turbo')
+
+```
+
+### Yandex smart speakers
+
+You must create an instance of the YandexSession or YandexSessionAsync class by specifying the column id, obtained using
+the above methods, as well as the login and password from the Yandex account.
+
+```python
+from yandex_smart_home_api.devices import YandexSession
+
+my_station = YandexSession(login='', password='', station_id='')
+
+```
+
+In the future, examples will be discussed for the synchronous class YandexSession, all actions for asynchronous
+YandexSessionAsync is similar except that these methods must be used asynchronously. In addition, the use of a session
+is different when using an asynchronous class, so you must call the asynchronous authorization method before executing
+methods:
+
+```python
+my_station.authorize()
+```
+
+All control of the column is carried out using scripts. You can obtain default and added scripts using the method:
+
+```python
+my_station.add_scenario(scenario_name='',
+                        activation_command='',
+                        instance='',
+                        value='')
+```
+
+scenario_name - script name activation_command - voice command for script activation in Alice instance - takes the
+values of:
+
+'text _ action '- to perform the action specified in the value
+
+'phrase _ action '- to voice the text specified in the value
+
+value - action or phrase depending on the instance type
+
+To update the script, use the method:
+
+```python
+my_station.update_scenario(scenario_id='',
+                           scenario_name='',
+                           activation_command='',
+                           instance='',
+                           value='')
+```
+
+To execute the script, use the method:
+
+```python
+my_station.exec_scenario(scenario_id='')
+```
+
+To delete a script, use the method:
+
+```python
+my_station.delete_scenario(scenario_id='')
+```
+
+#### Examples
+
+###### Create and execute scenario
+
+```python
+from asyncio import get_event_loop
+loop = get_event_loop()
+
+ys = YandexSessionAsync(login='login', password='password', station_id='3333333-0700-4e50-a82d-999d9999v9999')
+
+loop.run_until_complete(ys.authorize())
+loop.run_until_complete(ys.add_scenario(scenario_name='purifer',
+                       activation_command='purifer',
+                       instance='text_action',
+                       value='выключи очиститель воздуха'))
+scenarios = loop.run_until_complete(ys.get_scenarios())
+scenario_id = [scenario['id'] for scenario in scenarios if scenario['name'] == 'purifer'][0]
+loop.run_until_complete(ys.exec_scenario(scenario_id=scenario_id))
+loop.run_until_complete(ys.delete_scenario(scenario_id=scenario_id))
+```
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[python-shield]: https://img.shields.io/badge/Python-%203.10-blue?style=for-the-badge&logo=python
+[python-url]: https://www.python.org/downloads/release/python-310
+[pdm-shield]: https://img.shields.io/badge/PDM-%202.4-purple?style=for-the-badge&logo=dpd
+[pdm-url]: https://pdm.fming.dev/2.4

@@ -1,3 +1,10 @@
+<div align="center">
+  <a href="https://github.com/digital-external-env/envintegration">
+    <img src="docs/images/main_logo.png" alt="Logo" width="50%" height="50%">
+  </a>
+</div>
+
+
 # envintegration
 
 ## About
@@ -245,19 +252,19 @@ loop.run_until_complete(ys.delete_scenario(scenario_id=scenario_id))
 #### Get the number of steps that the user takes on walks
 
 ```python
-steps_from_walks = loop.run_until_complete(GFA.get_steps_from_walks())
+steps_from_walks = loop.run_until_complete(GoogleFitApi.get_steps_from_walks())
 ```
 
 #### Get user weight records
 
 ```python
-heights = loop.run_until_complete(GFA.get_heights())
+heights = loop.run_until_complete(GoogleFitApi.get_heights())
 ```
 
 #### Get user height records
 
 ```python
-weights = loop.run_until_complete(GFA.get_weights())
+weights = loop.run_until_complete(GoogleFitApi.get_weights())
 ```
 
 #### Get records of the user's sleep and their sleep phase at a certain time

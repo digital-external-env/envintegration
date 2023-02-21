@@ -89,11 +89,11 @@ my_station.add_scenario(scenario_name='',
 scenario_name - script name activation_command - voice command for script activation in Alice instance - takes the
 values of:
 
-'text _ action '- to perform the action specified in the value
+`text_action` - to perform the action specified in the value
 
-'phrase _ action '- to voice the text specified in the value
+`phrase_action` - to voice the text specified in the value
 
-value - action or phrase depending on the instance type
+`value-action` or phrase depending on the instance type
 
 To update the script, use the method:
 

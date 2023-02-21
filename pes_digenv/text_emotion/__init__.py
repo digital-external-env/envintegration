@@ -1,4 +1,4 @@
-from .api import emotion, get_mat, is_toxic
+from .api import TextEmotionApi
 
 
-__all__ = ["is_toxic", "get_mat", "emotion"]
+__all__ = ["TextEmotionApi"]

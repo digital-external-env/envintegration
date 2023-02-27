@@ -131,16 +131,55 @@ You must create an instance of the GoogleFitApi class by specifying in the clien
 instructions
 
 ```python
-from api.py import GoogleFitApi
+class GoogleFitApi:
+    async def get_sleeps_and_phases_by_time(
+        self, start_data_time: int, end_data_time: int
+    ) -> list[dict[str, Any]]:
+        """
+        Get data about the user's sleep and sleep phase.
+        Args:
+            start_data_time (int): Sleep start time to search
+            start_data_time (int): Sleep end time to search
+        Returns:
+            list: dict of data about the user's sleep and sleep phase.
+        """
+        ...
 
-GFA = GoogleFitApi(token=client_token)
+    async def get_steps_from_walks(
+        self, duration: int = GoogleFit.google_types.duration_type["7days"]
+    ) -> int:
+        """
+        Get number of steps for all walks
+        Args:
+            duration (int): Walking range
+        Returns:
+            int:Number of steps for all walks
+        """
+        ...
+
+    async def get_heights(self) -> list[dict[str, Any]]:
+        """
+        Get a list of the user's height
+        Args:
+            None
+        Returns:
+            list: dict of user's height in different records
+        """
+        ...
+
+    async def get_weights(self) -> list[dict[str, Any]]:
+        """
+        Get a list of the user's weight
+        Args:
+            None
+        Returns:
+            list: dict of user's weight in different records
+        """
+        ...
 ```
 
-Note that all methods are asynchronous.
-```python
-from asyncio import get_event_loop
-loop = get_event_loop()
-```
+
+
 
 ## pes_digenv
 

@@ -178,9 +178,6 @@ class GoogleFitApi:
         ...
 ```
 
-
-
-
 ## pes_digenv
 
 This module is designed to determine the psychoemotional state of the user by exchanging text messages between people
@@ -229,6 +226,51 @@ class TextEmotionApi:
 [in progress]
 
 ## digital_hygiene
+
+This module controls the parameters of the user's external environment devices based on his psychoemotional state
+and data from the external physical and digital environment. 
+Management is carried out in order to improve the psychoemotional state of the user
+
+### Usage
+
+1. Place dataset into `data` folder (the table with links below)
+
+2. Train model or download [weights](https://drive.google.com/file/d/1VL3hRUZzyV6z3jcslDKUC0XS7F_lupuw/view?usp=sharing) and place them into `checkpoint` folder
+  
+  ```bash
+  pdm run python train.py 
+  ```
+
+3. Predict
+
+  ```bash
+  pdm run python test.py
+  ```
+---
+
+### Models
+
+| Model     | Full name  | Paper |
+| ------ | - | -------------------------------------------------- |
+| NRMS      | Neural News Recommendation with Multi-Head Self-Attention                 | <https://www.aclweb.org/anthology/D19-1671/>         |
+
+---
+
+### Datasets
+
+| Dataset     | Full name                                                                 | Paper                                              |
+| --------- | ------------------------------------------------ | -------------------------------------------------- |
+| MIND<br> + google translate (en → ru)      | A Large-scale Dataset for News Recommendation                | <https://msnews.github.io/assets/doc/ACL2020_MIND.pdf>         |
+
+---
+
+### Results
+
+  | Model | News information |  AUC  |  MRR  | nDCG@5 | nDCG@10 |                 Configuration                 |
+  | :---: | :--------------: | :---: | :---: | :----: | :-----: | :-------------------------------------------: |
+  | NRMS |     title       | 66.61 | 31.86 | 35.19  |  41.46  | batch size 128 <br> 4 epochs<br>lr 3e-4 |
+
+---
 
 [in progress]
 

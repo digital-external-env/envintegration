@@ -12,6 +12,10 @@ This library was created to develop solutions in the field of integrating the ex
  * **env_manage** - for controlling the parameters of the external environment
  * **digital_hygiene** - for provide filtering of negative manifestations of the physical (projected) and digital external environment of users
 
+## Demo
+[in progress]
+
+
 ## Built With
 
 * [![Python][python-shield]][python-url]
@@ -39,13 +43,14 @@ After that, using the received token, following the [instruction](https://yandex
   ```sh
   pip install git+ssh://github.com/digital-external-env/envintegration.git
   ````
-
-## env_manage
+## How to Use
+### env_manage
+--------------
 
 This module contains methods for obtaining information about the smart home, smart home devices and managing these
 devices. Modules methods allow you to separately manage smart home devices using the `YandexApi` class. The `YandexSession`/`YandexSessionAsync` class is used to control smart speakers. The library provides convenient direct access to device objects that allow you to access device-accessible methods
 
-### Smart devices
+#### Smart devices
 
 You must create an instance of the Yandex API class by specifying in the client_token attribute a token received by
 instructions
@@ -56,7 +61,7 @@ from envintegration import YandexApi
 api = YandexApi(client_token=client_token)
 ```
 
-### Yandex smart speakers
+#### Yandex smart speakers
 
 You must create an instance of the YandexSession or YandexSessionAsync class by specifying the column id, obtained using
 the above methods, as well as the login and password from the Yandex account.
@@ -117,8 +122,8 @@ To delete a script, use the method:
 my_station.delete_scenario(scenario_id='')
 ```
 
-## pes_env
-
+### pes_env
+----------
 This module contains methods for obtaining information about the user's activity with [Google Fit](https://developers.google.com/fit/rest/v1/get-started?hl=en):
 - fitness bracelets
 - smart watches
@@ -178,8 +183,8 @@ class GoogleFitApi:
         ...
 ```
 
-## pes_digenv
-
+### pes_digenv
+--------------
 This module is designed to determine the psychoemotional state of the user by exchanging text messages between people
 
 ```python
@@ -225,13 +230,13 @@ class TextEmotionApi:
 ```
 [in progress]
 
-## digital_hygiene
-
+### digital_hygiene
+-------------------
 This module controls the parameters of the user's external environment devices based on his psychoemotional state
 and data from the external physical and digital environment. 
 Management is carried out in order to improve the psychoemotional state of the user
 
-### Usage
+#### Usage
 
 1. Place dataset into `data` folder (the table with links below)
 
@@ -248,7 +253,7 @@ Management is carried out in order to improve the psychoemotional state of the u
   ```
 ---
 
-### Models
+#### Models
 
 | Model     | Full name  | Paper |
 | ------ | - | -------------------------------------------------- |
@@ -256,7 +261,7 @@ Management is carried out in order to improve the psychoemotional state of the u
 
 ---
 
-### Datasets
+#### Datasets
 
 | Dataset     | Full name                                                                 | Paper                                              |
 | --------- | ------------------------------------------------ | -------------------------------------------------- |
@@ -264,7 +269,7 @@ Management is carried out in order to improve the psychoemotional state of the u
 
 ---
 
-### Results
+#### Results
 
   | Model | News information |  AUC  |  MRR  | nDCG@5 | nDCG@10 |                 Configuration                 |
   | :---: | :--------------: | :---: | :---: | :----: | :-----: | :-------------------------------------------: |
@@ -274,13 +279,11 @@ Management is carried out in order to improve the psychoemotional state of the u
 
 [in progress]
 
-## Documentation
-
-[in progress]
 
 ## Examples
 
 ### env_manage
+---
 
 #### Getting Smart Home Information
 
@@ -326,7 +329,7 @@ loop.run_until_complete(ys.delete_scenario(scenario_id=scenario_id))
 ```
 
 ### pes_env
-
+---
 #### Get the number of steps that the user takes on walks
 
 ```python
@@ -336,13 +339,13 @@ steps_from_walks = loop.run_until_complete(GoogleFitApi.get_steps_from_walks())
 #### Get user weight records
 
 ```python
-heights = loop.run_until_complete(GoogleFitApi.get_heights())
+weights = loop.run_until_complete(GoogleFitApi.get_heights())
 ```
 
 #### Get user height records
 
 ```python
-weights = loop.run_until_complete(GoogleFitApi.get_weights())
+heights = loop.run_until_complete(GoogleFitApi.get_weights())
 ```
 
 #### Get records of the user's sleep and their sleep phase at a certain time
@@ -355,10 +358,18 @@ sleeps_and_phases_by_time = loop.run_until_complete(GFA.get_sleeps_and_phases_by
 ```
 
 ### pes_digenv
-
+---
 [in progress]
 
 ### digital_hygiene
+---
+[in progress]
+
+## Documentation
+
+[in progress]
+
+## Contribution
 
 [in progress]
 

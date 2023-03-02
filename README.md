@@ -339,13 +339,13 @@ steps_from_walks = loop.run_until_complete(GoogleFitApi.get_steps_from_walks())
 #### Get user weight records
 
 ```python
-weights = loop.run_until_complete(GoogleFitApi.get_heights())
+weights = loop.run_until_complete(GoogleFitApi.get_weights())
 ```
 
 #### Get user height records
 
 ```python
-heights = loop.run_until_complete(GoogleFitApi.get_weights())
+heights = loop.run_until_complete(GoogleFitApi.get_heights())
 ```
 
 #### Get records of the user's sleep and their sleep phase at a certain time

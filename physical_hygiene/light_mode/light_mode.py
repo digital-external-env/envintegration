@@ -150,5 +150,3 @@ def light_mode_with_pai_and_hr(pai: int, sleep_duration: time, current_time: tim
                                    light_intensity=500)]
 
 
-result = light_mode_with_pai_and_hr(pai=50, current_time=time(18), hr=100, sleep_duration=time(hour=5))
-pprint(result)

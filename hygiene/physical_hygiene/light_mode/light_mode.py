@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import time
 from pprint import pprint
-from typing import Union, List
+from typing import List, Union
 
 
 @dataclass
@@ -148,5 +148,3 @@ def light_mode_with_pai_and_hr(pai: int, sleep_duration: time, current_time: tim
                                    duration=None,
                                    light_temperature=4000,
                                    light_intensity=500)]
-
-

@@ -1,8 +1,11 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-from feedrecsys.models.common import AdditiveAttention, DotProductClickPredictor, MultiHeadSelfAttention
+from feedrecsys.models.common import (
+    AdditiveAttention,
+    DotProductClickPredictor,
+    MultiHeadSelfAttention,
+)
 
 
 class UserEncoder(torch.nn.Module):

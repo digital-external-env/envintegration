@@ -143,7 +143,7 @@ This function returns a list of lighting steps (recommendations) based on stress
 of day
 
 ```python
-from physical_hygiene import light_mode_with_stress_index
+from hygiene.physical_hygiene import light_mode_with_stress_index
 from datetime import time
 
 steps = light_mode_with_stress_index(stress_index=50,
@@ -160,10 +160,10 @@ return following list:
 This function returns a list of lighting steps (recommendations) based on activity index (cardio scores), pulse, sleep duration, and current time of day
 
 ```python
-from physical_hygiene import light_mode_with_pai_and_hr
+from hygiene.physical_hygiene import light_mode_with_pai_and_hr
 from datetime import time
 
-steps = light_mode_with_pai_and_hr(pai=50, 
+steps = light_mode_with_pai_and_hr(pai=50,
                                    hr=100,
                                    current_time=time(hour=10),
                                    sleep_duration=time(hour=6))
@@ -180,7 +180,7 @@ This block contains the functions of issuing recommendations for controlling sma
 #### stress_recommendations
 
 ```python
-from physical_hygiene import  stress_recommendations
+from hygiene.physical_hygiene import stress_recommendations
 
 recommendation = stress_recommendations(stress_index=50)
 

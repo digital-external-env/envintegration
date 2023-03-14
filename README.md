@@ -66,6 +66,29 @@ from envintegration import YandexApi
 
 api = YandexApi(client_token=client_token)
 ```
+###### Getting Smart Home Information
+
+```python
+api.get_smart_home_info()
+```
+
+To simplify the operation, direct access to devices is implemented by creating an instance of the device class, and also
+to methods available for devices, obtaining properties, abilities and information about the device.
+
+(Note that all methods except set_id are asynchronous)
+
+###### Getting device information and device management
+
+```python
+my_purifer = api.purifer.set_id(device_id='')
+my_purifer.info()
+my_purifer.on_off(value=True)
+
+my_vacuum_cleaner = api.purifer.set_id(device_id='')
+my_vacuum_cleaner.get_capabilities()
+my_vacuum_cleaner.mode(value='turbo')
+
+```
 
 ### Yandex smart speakers
 
@@ -126,6 +149,43 @@ To delete a script, use the method:
 
 ```python
 my_station.delete_scenario(scenario_id='')
+```
+
+### Alternative smart speaker manage
+
+
+If the use of YandexSession fails on the server side, you can use the SeleniumQuasar class:
+
+```python
+from env_manage.yandex.selenium_quasar import SeleniumQuasar
+quasar = SeleniumQuasar(login='', password='')
+```
+
+This class contains the following methods:
+
+Method for authorization in yandex system
+```python
+quasar.authorization()
+```
+Method for add scenario
+```
+This method must contain an attribute 'text' or 'action'.
+Attribute 'text' using for voicing phrases
+Attribite 'action' using for add tasks
+You also must specify smart_speaker_name and scenario_name, scenario_name must be unique.
+```
+
+```python
+quasar.add_scenario(self, scenario_name: 'new_scenario', smart_speaker_name: 'Яндекс Лайт',action='Включи пылесос')
+```
+Method for execute scenario
+
+```python
+quasar.run_scenario(scenario_name='new_scenario')
+```
+Method for delete scenario
+```python
+quasar.delete_scenario(scenario_name='new_scenario')
 ```
 
 ## physical_hygiene

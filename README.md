@@ -24,7 +24,7 @@ This library was created to develop solutions in the field of integrating the ex
 ## Requirements
 
 * Python ~=3.10.6
-* PDM ~=2.4.2 or pip ~=22.0
+* pip >=21.0 or PDM ~=2.4.2
 
 ## Getting started
 
@@ -38,11 +38,12 @@ After that, using the received token, following the [instruction](https://yandex
 ### Installation
 
   ```sh
-  pdm add git+ssh://github.com/digital-external-env/envintegration.git
-  ```
-  ```sh
   pip install git+ssh://github.com/digital-external-env/envintegration.git
   ````
+  
+  ```sh
+  pdm add git+ssh://github.com/digital-external-env/envintegration.git
+  ```
 ## How to Use
 ### env_manage
 --------------

@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/digital-external-env/envintegration">
-    <img src="docs/images/main_logo.png" alt="Logo" width="60%" height="50%">
+    <img src="docs/img/main_logo.png" alt="Logo" width="60%" height="50%">
   </a>
 </div>
 

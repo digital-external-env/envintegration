@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/digital-external-env/envintegration">
-    <img src="docs/images/main_logo.png" alt="Logo" width="60%" height="50%">
+    <img src="docs/img/main_logo.png" alt="Logo" width="60%" height="50%">
   </a>
 </div>
 
@@ -512,8 +512,8 @@ sleeps_and_phases_by_time = loop.run_until_complete(
 
 <div align="center">
   <a href="https://github.com/digital-external-env/envintegration">
-    <img src="docs/images/logo.png" alt="Logo" width="30%" height="30%">
-    <img src="docs/images/img.png" alt="Logo" width="30%" height="30%">
+    <img src="docs/img/logo.png" alt="Logo" width="30%" height="30%">
+    <img src="docs/img/img.png" alt="Logo" width="30%" height="30%">
   </a>
 </div>
 

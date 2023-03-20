@@ -4,16 +4,14 @@ from os import path
 
 import numpy as np
 import pandas as pd
-from sklearn.metrics import roc_auc_score
-from tqdm import tqdm
-
 import torch
-from torch.utils.data import DataLoader
-
 from feedrecsys.data import BehaviorsDataset, NewsDataset, UserDataset
 from feedrecsys.metrics import mrr_score, ndcg_score
 from feedrecsys.models import NRMS
 from feedrecsys.utils import latest_checkpoint
+from sklearn.metrics import roc_auc_score
+from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 
 def value2rank(d):

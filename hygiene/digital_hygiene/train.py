@@ -1,20 +1,18 @@
 import datetime
 import os
 from pathlib import Path
+from test import evaluate
 
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
-
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
-from torch.utils.tensorboard import SummaryWriter
-
 from feedrecsys.data.base import BaseDataset
 from feedrecsys.models import NRMS
 from feedrecsys.utils import EarlyStopping, latest_checkpoint
-from test import evaluate
+from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
+from tqdm import tqdm
 
 
 def train(

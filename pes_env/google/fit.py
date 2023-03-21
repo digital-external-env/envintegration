@@ -14,7 +14,9 @@ from .utils import (
 
 
 class GoogleFit:
-    google_fit_url = "https://fitness.googleapis.com/fitness/v1/users/me"
+    google_fit_url = 'https://fitness.googleapis.com/fitness/v1/users/me'
+    google_fit_session_url = 'https://fitness.googleapis.com/fitness/v1/users/me/sessions'
+    google_fit_data_sources_url = 'https://www.googleapis.com/fitness/v1/users/me/dataSources/'
     google_types = GoogleTypes()
 
     def __init__(self, token: str) -> None:
@@ -33,178 +35,199 @@ class GoogleFit:
     async def _close_session(self) -> None:
         await self.session.close()
 
-    async def _get_sessions(self) -> Any:
-        self.response = await self.session.get(
-            self.google_fit_url + "/sessions"
-        )
-        return await self.response.json()
+    async def _get_sessions(self) -> Dict[str, Any]:
+        self.response = await self.session.get(self.google_fit_session_url)
+        result = await self.response.json()
+        next_page_token = result['nextPageToken']
+        real_result = {}
+        index = 0
+        for session in result['session']:
+            session = _upgrade_session(session)
+            session = _minimal_session(session)
+            real_result.update({index: session})
+            index += 1
 
-    async def _get_sessions_by_type(self, type: int) -> list[dict[str, Any]]:
+        while (next_page_token):
+            self.response = await self.session.get(
+                self.google_fit_session_url
+                + "/?pageToken="
+                + next_page_token)
+            if self.response.status != 400:
+                temp_result = await self.response.json()
+                if not len(temp_result['session']):
+                    break
+                next_page_token = temp_result['nextPageToken']
+                for session in temp_result['session']:
+                    session = _upgrade_session(session)
+                    session = _minimal_session(session)
+                    real_result.update({index: session})
+                    index += 1
+            else:
+                break
+
+        return real_result
+
+    async def _get_sessions_by_type(self, type: int) -> Dict[str, Any]:
         sessions = await self._get_sessions()
-        result: list[dict[str, Any]] = []
-        for session in sessions["session"]:
-            if session["activityType"] == type:
-                upgrade_session(session)
-                minimal_session(session)
-                result.append(session)
+        result = {}
+        index = 0
+        for session in sessions.values():
+            if session['activityType'] == type:
+                result.update({index: session})
+                index += 1
         return result
 
-    async def _get_sleeps_and_phases(self) -> list[dict[str, Any]]:
-        """Get all the dreams and phases"""
-        sleep_sessions = await self.get_sleeps()
-        for sleep in sleep_sessions:
-            sleep["phases"] = await self.get_sleep_phases(
-                sleep["start_time"], sleep["end_time"]
-            )
-        return sleep_sessions
+    async def _get_sleeps(self) -> Dict[str, Any]:
+        return await self._get_sessions_by_type(activityType['Сон'])
 
-    async def _get_sleeps_phases_for(
-        self, sleep_sessions: list[dict[str, Any]]
-    ) -> list[dict[str, Any]]:
-        """For the convenience of the user, get access to certain dreams"""
-        for sleep in sleep_sessions:
-            sleep["phases"] = await self.get_sleep_phases(
-                sleep["start_time"], sleep["end_time"]
-            )
-        return sleep_sessions
-
-    async def _get_walks_and_steps(
-        self, duration: int = google_types.duration_type["7days"]
-    ) -> list[Any]:
-        result: list[Any] = []
-        walk_sessions = await self.get_walks()
-        for walk in walk_sessions:
-            walk["steps"] = await self.get_steps(
-                walk["start_time"], walk["end_time"], duration
-            )
-            result.append(walk["steps"][0])
-        return result
-
-    async def _get_data_sources_and_data_point_changes(
-        self, data_sources: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Get all data_sources and all Pointers"""
-        for data_source in data_sources["dataSource"]:
-            data_source["Points"] = await self.get_data_point_changes(
-                data_source["dataStreamId"]
-            )
-        return data_sources
-
-    async def _get_data_sources_filters(
-        self, data_sources: dict[str, Any], filter_names: list[str]
-    ) -> dict[str, Any]:
-        """Get specific data_sources by the data_source_names list"""
-        sort_data_source: dict[str, Any] = {}
-        for name in filter_names:
-            sort_data_source[name] = {"lenght": 0}
-        for data_source in data_sources["dataSource"]:
-            index = data_source["dataType"]["name"]
-            sort_data_source[index].update(
-                {sort_data_source[index]["lenght"]: data_source}
-            )
-            sort_data_source[index].update(
-                {"lenght": sort_data_source[index]["lenght"] + 1}
-            )
-        return sort_data_source
-
-    async def get_sleep_phases(self, start_time: int, end_time: int) -> Any:
-        """Get to a certain dream of its sleep phase"""
+    async def _get_sleep_phases(self, start_time: int, end_time: int) -> Dict[str, Any]:
         start_time = start_time * 1000
         end_time = end_time * 1000
         data = {
             "aggregateBy": [{"dataTypeName": "com.google.sleep.segment"}],
             "endTimeMillis": end_time,
-            "startTimeMillis": start_time,
+            "startTimeMillis": start_time
         }
-        self.response = await self.session.post(
-            self.google_fit_url + "/dataset:aggregate", data=json.dumps(data)
-        )
+        self.response = await self.session.post(self.google_fit_url + '/dataset:aggregate', data=json.dumps(data))
 
-        result: dict[str, Any] = await self.response.json()
-        for phase in result["bucket"][0]["dataset"][0]["point"]:
-            upgrade_point(phase)
-            minimal_point(phase)
-            phase.update(
-                value=self.google_types.sleep_stages[
-                    phase["value"][0]["intVal"]
-                ]
-            )
-        return result["bucket"][0]["dataset"][0]["point"]
+        result = await self.response.json()
+        for phase in result['bucket'][0]['dataset'][0]['point']:
+            phase = _upgrade_point(phase)
+            phase = _minimal_point(phase)
+            phase.update(value=sleepStages[phase['value'][0]['intVal']])
+        return result['bucket'][0]['dataset'][0]['point']
 
-    async def get_sleeps(self) -> list[dict[str, Any]]:
-        """Will get all the dreams"""
-        return await self._get_sessions_by_type(
-            self.google_types.activity_type["Сон"]
-        )
+    async def _get_sleeps_and_phases(self) -> Dict[str, Any]:
+        sleep_sessions = await self._get_sleeps()
+        for sleep in sleep_sessions.values():
+            sleep['phases'] = await self._get_sleep_phases(sleep['start_time'], sleep['end_time'])
+        return sleep_sessions
 
-    async def get_steps(
-        self,
-        start_time: int,
-        end_time: int,
-        duration: int = google_types.duration_type["7days"],
-    ) -> Any:
-        start_time = start_time * 1000
-        end_time = end_time * 1000
-        data = {
-            "aggregateBy": [
-                {
-                    "dataTypeName": "com.google.step_count.delta",
-                    "dataSourceId": "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps",
-                }
-            ],
-            "bucketByTime": {"durationMillis": duration},
-            "startTimeMillis": start_time,
-            "endTimeMillis": end_time,
-        }
-        self.response = await self.session.post(
-            self.google_fit_url + "/dataset:aggregate", data=json.dumps(data)
-        )
-
-        result: dict[str, Any] = await self.response.json()
-        for step in result["bucket"][0]["dataset"][0]["point"]:
-            upgrade_point(step)
-            minimal_point(step)
-            step.update(value=step["value"][0]["intVal"])
-        return result["bucket"][0]["dataset"][0]["point"]
-
-    async def get_walks(self) -> list[dict[str, Any]]:
-        sessions = await self._get_sessions()
-        result: list[dict[str, Any]] = []
-        for session in sessions["session"]:
-            if (
-                session["activityType"]
-                == self.google_types.activity_type["Ходьба"]
-                or session["activityType"]
-                == self.google_types.activity_type["Другая активность"]
-            ):
-                upgrade_session(session)
-                minimal_session(session)
-                result.append(session)
+    async def get_sleeps_and_phases_by_time(self, start_data_time: int, end_data_time: int) -> Dict[str, Any]:
+        sleep_sessions = await self._get_sleeps()
+        result = {}
+        index = 0
+        for sleep in sleep_sessions.values():
+            if sleep['start_time'] >= start_data_time and sleep['end_time'] <= end_data_time:
+                sleep['phases'] = await self._get_sleep_phases(sleep['start_time'], sleep['end_time'])
+                result.update({index: sleep})
+                index += 1
         return result
 
-    async def get_data_sources(self) -> Any:
-        """Get all data_sources"""
-        self.response = await self.session.get(
-            self.google_fit_url + "/dataSources"
-        )
-        return await self.response.json()
+    async def _get_sleeps_phases_for(
+            self, sleep_sessions: dict[str, Any]
+    ) -> dict[str, Any]:
+        if not (type(sleep_sessions) is dict):
+            return "Invalid type of input data"
+        for sleep in sleep_sessions.values():
+            sleep['phases'] = await self._get_sleep_phases(sleep['start_time'], sleep['end_time'])
+        return sleep_sessions
 
-    async def get_data_sources_filter(
-        self, data_sources: dict[str, Any], data_sourse_name: str
-    ) -> list[Any]:
-        """Get specific data_sources by one data_sourse_name"""
-        filter_data_sources: list[Any] = []
-        for _, data_source in enumerate(data_sources["dataSource"]):
-            if data_source["dataType"]["name"] == data_sourse_name:
-                filter_data_sources.append(data_source)
-        return filter_data_sources
+    async def _get_walks(self) -> dict[str, Any]:
+        sessions = await self._get_sessions()
+        result = {}
+        index = 0
+        for session in sessions.values():
+            if session['activityType'] == activityType['Ходьба']\
+                    or session['activityType'] == activityType['Другая активность']:
+                result.update({index: session})
+                index += 1
+        return result
+    
+    async def _get_walks_and_steps(
+            self, duration: int = google_types.duration_type["7days"]
+    ) -> dict[str, Any]:
+        walk_sessions = await self._get_walks()
+        result = {}
+        index = 0
+        for walk in walk_sessions.values():
+            walk['step'] = await self._get_steps(walk['start_time'], walk['end_time'], duration)
+            if walk['step'] == None:
+                continue
+            result.update({index: walk['step']})
+            index += 1
+        return result
 
-    async def get_data_point_changes(self, data_sources_id: str) -> Any:
-        """Get to a specific data_sources all Pointers"""
+    async def _get_data_point_changes(self, data_sources_id: str) -> dict[str, Any]:
         self.response = await self.session.get(
-            self.google_fit_url
-            + "/dataSources/"
+            self.google_fit_data_sources_url
             + data_sources_id
-            + "/dataPointChanges"
-        )
-        return await self.response.json()
+            + '/dataPointChanges')
+        result = await self.response.json()
+        next_page_token = result['nextPageToken']
+        real_result = {}
+        index = 0
+        for point in result['insertedDataPoint']:
+            point = _upgrade_point(point)
+            point = _minimal_point(point)
+            real_result.update({index: point})
+            index += 1
+
+        while (next_page_token):
+            self.response = await self.session.get(
+                self.google_fit_data_sources_url
+                + data_sources_id
+                + '/dataPointChanges'
+                + "/?pageToken="
+                + next_page_token)
+            if self.response.status != 400:
+                temp_result = await self.response.json()
+                next_page_token = temp_result['nextPageToken']
+                for point in temp_result['insertedDataPoint']:
+                    point = _upgrade_point(point)
+                    point = _minimal_point(point)
+                    real_result.update({index: point})
+                    index += 1
+            else:
+                break
+
+        return real_result
+    
+    async def _get_data_sources(self) -> dict[str, Any]:
+        self.response = await self.session.get(self.google_fit_data_sources_url)
+        data_sources = await self.response.json()
+        result = {}
+        index = 0
+        for data_source in data_sources['dataSource']:
+            result.update({index: data_source})
+            index += 1
+        return result
+    
+    async def _get_data_sources_and_data_point_changes(
+            self, data_sources: dict[str, Any]
+    ) -> dict[str, Any]:
+        for data_source in data_sources.values():
+            data_source['Points'] = await self._get_data_point_changes(data_source['dataStreamId'])
+        return data_sources
+
+    async def _get_data_sources_filters(
+            self, data_sources: dict[str, Any], filter_names: list[str]
+    ) -> dict[str, Any]:
+        if type(filter_names) is str:
+            filter_data_sources = {}
+            index = 0
+            for data_source in data_sources.values():
+                if data_source['dataType']['name'] == filter_names:
+                    filter_data_sources.update({index: data_source})
+                    index += 1
+            return filter_data_sources
+
+        if type(filter_names) is set:
+            sort_data_source = {}
+            for name in filter_names:
+                sort_data_source[name] = {'lenght': 0}
+            for data_source in data_sources.values():
+                index = data_source['dataType']['name']
+                if index in sort_data_source:
+                    sort_data_source[index].update({sort_data_source[index]['lenght']: data_source})
+                    sort_data_source[index].update({'lenght': sort_data_source[index]['lenght'] + 1})
+            return sort_data_source
+
+    async def _get_sr_znach_by_pulses(self, pulses: dict[str, Any]) -> Float:
+        S = 0
+        for pulse in pulses.values():
+            S = S + pulse['value']
+        if S > 1:
+            return S / len(pulses)
+        else:
+            return S

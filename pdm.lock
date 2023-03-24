@@ -198,7 +198,7 @@ summary = "A list-like structure which implements collections.abc.MutableSequenc
 
 [[package]]
 name = "gdown"
-version = "4.6.4"
+version = "4.6.6"
 summary = "Google Drive direct download of big files."
 dependencies = [
     "beautifulsoup4",
@@ -352,6 +352,41 @@ name = "numpy"
 version = "1.24.2"
 requires_python = ">=3.8"
 summary = "Fundamental package for array computing in Python"
+
+[[package]]
+name = "nvidia-cublas-cu11"
+version = "11.10.3.66"
+requires_python = ">=3"
+summary = "CUBLAS native runtime libraries"
+dependencies = [
+    "setuptools",
+    "wheel",
+]
+
+[[package]]
+name = "nvidia-cuda-nvrtc-cu11"
+version = "11.7.99"
+requires_python = ">=3"
+summary = "NVRTC native runtime libraries"
+
+[[package]]
+name = "nvidia-cuda-runtime-cu11"
+version = "11.7.99"
+requires_python = ">=3"
+summary = "CUDA Runtime native Libraries"
+dependencies = [
+    "setuptools",
+    "wheel",
+]
+
+[[package]]
+name = "nvidia-cudnn-cu11"
+version = "8.5.0.96"
+requires_python = ">=3"
+summary = "cuDNN runtime libraries"
+dependencies = [
+    "nvidia-cublas-cu11",
+]
 
 [[package]]
 name = "outcome"
@@ -598,7 +633,7 @@ dependencies = [
 
 [[package]]
 name = "selenium"
-version = "4.8.2"
+version = "4.8.3"
 requires_python = ">=3.7"
 summary = ""
 dependencies = [
@@ -669,6 +704,10 @@ version = "1.13.1"
 requires_python = ">=3.7.0"
 summary = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
 dependencies = [
+    "nvidia-cublas-cu11==11.10.3.66; platform_system == \"Linux\"",
+    "nvidia-cuda-nvrtc-cu11==11.7.99; platform_system == \"Linux\"",
+    "nvidia-cuda-runtime-cu11==11.7.99; platform_system == \"Linux\"",
+    "nvidia-cudnn-cu11==8.5.0.96; platform_system == \"Linux\"",
     "typing-extensions",
 ]
 
@@ -748,7 +787,7 @@ dependencies = [
 
 [[package]]
 name = "types-requests"
-version = "2.28.11.15"
+version = "2.28.11.16"
 summary = "Typing stubs for requests"
 dependencies = [
     "types-urllib3<1.27",
@@ -792,6 +831,12 @@ dependencies = [
     "filelock<4,>=3.4.1",
     "platformdirs<4,>=2.4",
 ]
+
+[[package]]
+name = "wheel"
+version = "0.40.0"
+requires_python = ">=3.7"
+summary = "A built-package format for Python"
 
 [[package]]
 name = "wsproto"
@@ -1289,9 +1334,9 @@ content_hash = "sha256:08a1f5703106429ab6db8220939ef8031a963a6a800510307f378d610
     {url = "https://files.pythonhosted.org/packages/fa/a1/d0822eb2f827f209c8fcf19ff1c9eb30ae08e25b710cf432b1013ea23429/frozenlist-1.3.3-cp311-cp311-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:9309869032abb23d196cb4e4db574232abe8b8be1339026f489eeb34a4acfd91"},
     {url = "https://files.pythonhosted.org/packages/fd/b8/9ed4ed37b2c3269660a86a10a09b2fe49dbbd6973ac684804ece7b51b63f/frozenlist-1.3.3-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:924620eef691990dfb56dc4709f280f40baee568c794b5c1885800c3ecc69816"},
 ]
-"gdown 4.6.4" = [
-    {url = "https://files.pythonhosted.org/packages/22/b0/f319f5d4ecc75fa8bdf0b46061cd98144a8758c19cc2a722937ea247ee52/gdown-4.6.4.tar.gz", hash = "sha256:d33210b1b3d7b12fef05d6b9ea7f22a513739909ca511d5d9d236dc676667f79"},
-    {url = "https://files.pythonhosted.org/packages/bc/c2/bf15a3e9a5551bc13d9fce0377376e6801fa4bd9fca964dc1ee093da2559/gdown-4.6.4-py3-none-any.whl", hash = "sha256:03eb456d43611d7f8531a68662cae0d5c65cb74c7159365f2d1fbe882b39ce6b"},
+"gdown 4.6.6" = [
+    {url = "https://files.pythonhosted.org/packages/8c/be/0da586176390aa7e36cb5e5de9a477ae457d74781f40afa04054ad2ec0f2/gdown-4.6.6-py3-none-any.whl", hash = "sha256:3f921fdaa428cd37db5334332c38e6ec9e1037a0cc2c9f0b6b0de03f9b879985"},
+    {url = "https://files.pythonhosted.org/packages/c9/26/72ae7a223c873656a973359c8a1a7ba78d542b84e4a6780fda7fa3abd170/gdown-4.6.6.tar.gz", hash = "sha256:33dc0dc2927b2dcfb8bd6bb300c17b2809a917aa9553d6a9feaafc0cc695d85d"},
 ]
 "gitdb 4.0.10" = [
     {url = "https://files.pythonhosted.org/packages/21/a6/35f83efec687615c711fe0a09b67e58f6d1254db27b1013119de46f450bd/gitdb-4.0.10-py3-none-any.whl", hash = "sha256:c286cf298426064079ed96a9e4a9d39e7f3e9bf15ba60701e95f5492f28415c7"},
@@ -1486,6 +1531,23 @@ content_hash = "sha256:08a1f5703106429ab6db8220939ef8031a963a6a800510307f378d610
     {url = "https://files.pythonhosted.org/packages/fa/72/979b755c09696de035d835a78df94b079e3e51ea967efa0c800cff608847/numpy-1.24.2-cp311-cp311-win32.whl", hash = "sha256:e428c4fbfa085f947b536706a2fc349245d7baa8334f0c5723c56a10595f9b95"},
     {url = "https://files.pythonhosted.org/packages/fa/df/53e8c0c8ccecf360b827a3d2b1b6060644c635c3149a9d6415a6fe4ccf44/numpy-1.24.2-cp310-cp310-win_amd64.whl", hash = "sha256:97cf27e51fa078078c649a51d7ade3c92d9e709ba2bfb97493007103c741f1d0"},
     {url = "https://files.pythonhosted.org/packages/ff/98/7b71cabcce208f8c67398e812068524e473a143342583d55955cbb92b463/numpy-1.24.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:d0a2db9d20117bf523dde15858398e7c0858aadca7c0f088ac0d6edd360e9ad2"},
+]
+"nvidia-cublas-cu11 11.10.3.66" = [
+    {url = "https://files.pythonhosted.org/packages/7a/08/57e6b6481af73590259a9600c32a68eb853966e354fca147cde17ed9ea27/nvidia_cublas_cu11-11.10.3.66-py3-none-win_amd64.whl", hash = "sha256:8ac17ba6ade3ed56ab898a036f9ae0756f1e81052a317bf98f8c6d18dc3ae49e"},
+    {url = "https://files.pythonhosted.org/packages/ce/41/fdeb62b5437996e841d83d7d2714ca75b886547ee8017ee2fe6ea409d983/nvidia_cublas_cu11-11.10.3.66-py3-none-manylinux1_x86_64.whl", hash = "sha256:d32e4d75f94ddfb93ea0a5dda08389bcc65d8916a25cb9f37ac89edaeed3bded"},
+]
+"nvidia-cuda-nvrtc-cu11 11.7.99" = [
+    {url = "https://files.pythonhosted.org/packages/9e/10/c9fc448f33d439981d6a74b693526871c4ef13e8d81a7b4de12e3a12a1b9/nvidia_cuda_nvrtc_cu11-11.7.99-py3-none-win_amd64.whl", hash = "sha256:f2effeb1309bdd1b3854fc9b17eaf997808f8b25968ce0c7070945c4265d64a3"},
+    {url = "https://files.pythonhosted.org/packages/ea/8d/0709ba16c2831c17ec1c2ea1eeb89ada11ffa8d966d773cce0a7463b22bb/nvidia_cuda_nvrtc_cu11-11.7.99-py3-none-manylinux1_x86_64.whl", hash = "sha256:f7d9610d9b7c331fa0da2d1b2858a4a8315e6d49765091d28711c8946e7425e7"},
+    {url = "https://files.pythonhosted.org/packages/ef/25/922c5996aada6611b79b53985af7999fc629aee1d5d001b6a22431e18fec/nvidia_cuda_nvrtc_cu11-11.7.99-2-py3-none-manylinux1_x86_64.whl", hash = "sha256:9f1562822ea264b7e34ed5930567e89242d266448e936b85bc97a3370feabb03"},
+]
+"nvidia-cuda-runtime-cu11 11.7.99" = [
+    {url = "https://files.pythonhosted.org/packages/32/2c/d89ea2b4051fbabff8d2edda8c735dabae6d5d1b8d5215f9749d38dcdb72/nvidia_cuda_runtime_cu11-11.7.99-py3-none-win_amd64.whl", hash = "sha256:bc77fa59a7679310df9d5c70ab13c4e34c64ae2124dd1efd7e5474b71be125c7"},
+    {url = "https://files.pythonhosted.org/packages/36/92/89cf558b514125d2ebd8344dd2f0533404b416486ff681d5434a5832a019/nvidia_cuda_runtime_cu11-11.7.99-py3-none-manylinux1_x86_64.whl", hash = "sha256:cc768314ae58d2641f07eac350f40f99dcb35719c4faff4bc458a7cd2b119e31"},
+]
+"nvidia-cudnn-cu11 8.5.0.96" = [
+    {url = "https://files.pythonhosted.org/packages/db/69/4d28d4706946f89fffe3f87373a079ae95dc17f9c0fcd840fe570c67e36b/nvidia_cudnn_cu11-8.5.0.96-py3-none-manylinux1_x86_64.whl", hash = "sha256:71f8111eb830879ff2836db3cccf03bbd735df9b0d17cd93761732ac50a8a108"},
+    {url = "https://files.pythonhosted.org/packages/dc/30/66d4347d6e864334da5bb1c7571305e501dcb11b9155971421bb7bb5315f/nvidia_cudnn_cu11-8.5.0.96-2-py3-none-manylinux1_x86_64.whl", hash = "sha256:402f40adfc6f418f9dae9ab402e773cfed9beae52333f6d86ae3107a1b9527e7"},
 ]
 "outcome 1.2.0" = [
     {url = "https://files.pythonhosted.org/packages/dd/91/741e1626e89fdc3664169e16300c59eefa4b23540cc6d6c70450f885098f/outcome-1.2.0.tar.gz", hash = "sha256:6f82bd3de45da303cf1f771ecafa1633750a358436a8bb60e06a1ceb745d2672"},
@@ -1822,9 +1884,9 @@ content_hash = "sha256:08a1f5703106429ab6db8220939ef8031a963a6a800510307f378d610
     {url = "https://files.pythonhosted.org/packages/5e/0e/ef0a49be56dbc4052a086888cd2490e15fcc95b0eda79e9d0e737b1ab93d/rich-13.3.2.tar.gz", hash = "sha256:91954fe80cfb7985727a467ca98a7618e5dd15178cc2da10f553b36a93859001"},
     {url = "https://files.pythonhosted.org/packages/6b/f0/79df8eaa345ece1d33d8dfeec46ea166028da37b314dc44ead18c058a126/rich-13.3.2-py3-none-any.whl", hash = "sha256:a104f37270bf677148d8acb07d33be1569eeee87e2d1beb286a4e9113caf6f2f"},
 ]
-"selenium 4.8.2" = [
-    {url = "https://files.pythonhosted.org/packages/92/1e/e25dee0e94cdab007464279ee599e4663a4cc3e829bb3448a4084fca4b79/selenium-4.8.2.tar.gz", hash = "sha256:c48372905bffcc3b24bd55ab4683a07ee5e1f30fe918c59558ea5ee44cedf6c3"},
-    {url = "https://files.pythonhosted.org/packages/ad/13/481aa476a9bcfec0bf74140a4c395dede0569cf56dc773abec181f95e30f/selenium-4.8.2-py3-none-any.whl", hash = "sha256:bd04eb41395605d9b2b65fe587f3fed21431da75512985c52772529e5e210c60"},
+"selenium 4.8.3" = [
+    {url = "https://files.pythonhosted.org/packages/d9/4b/e964eaca99d249eb3109ac75af551601923ba727c915db43c82311a0b16a/selenium-4.8.3-py3-none-any.whl", hash = "sha256:28430ac54a54fa59ad1f5392a1b89b169fe3ab2c2ccd1a9a10b6fe74f36cd6da"},
+    {url = "https://files.pythonhosted.org/packages/db/f6/5c1251e5e52fa41b1f7e3add82ab7332ed60eff72cb4efc71be85fde77ef/selenium-4.8.3.tar.gz", hash = "sha256:61cda3a304f82637162bc155cae7bf88fdb04c115fa2cb1c1c2e1358fcd19a9f"},
 ]
 "setuptools 67.3.2" = [
     {url = "https://files.pythonhosted.org/packages/86/7b/f35d72b7a6acbc27732e88d7ceb7f224b3e0683bf645e1c9e2ac2cd96c0d/setuptools-67.3.2-py3-none-any.whl", hash = "sha256:bb6d8e508de562768f2027902929f8523932fcd1fb784e6d573d2cafac995a48"},
@@ -1981,9 +2043,9 @@ content_hash = "sha256:08a1f5703106429ab6db8220939ef8031a963a6a800510307f378d610
     {url = "https://files.pythonhosted.org/packages/3e/7d/b34fc53268a54f5cb731456c35a28b0b08e0ee2687968c977813445c0b5e/trio_websocket-0.10.0-py3-none-any.whl", hash = "sha256:ae0a8bab4b0014510aca37fb67a6eaaa77e64aba372a7333845d2eb991989ae2"},
     {url = "https://files.pythonhosted.org/packages/78/36/1f8e186d8f29b44503bd1447cf9482b949ff4864d7b21c90f6688982310c/trio-websocket-0.10.0.tar.gz", hash = "sha256:5a7a256cf45532a0e876b55c173f96228e95445869b6dfdb1556015de89796fa"},
 ]
-"types-requests 2.28.11.15" = [
-    {url = "https://files.pythonhosted.org/packages/40/78/47e77dfeb78ad1f7bb43b0d92cba6fa8d13dd4367cc049a1b1f61249f7b1/types_requests-2.28.11.15-py3-none-any.whl", hash = "sha256:a05e4c7bc967518fba5789c341ea8b0c942776ee474c7873129a61161978e586"},
-    {url = "https://files.pythonhosted.org/packages/fc/9b/a29ff9475078dce0643de2a3fb0960fb6e8f1db75c65a80139165673a7cf/types-requests-2.28.11.15.tar.gz", hash = "sha256:fc8eaa09cc014699c6b63c60c2e3add0c8b09a410c818b5ac6e65f92a26dde09"},
+"types-requests 2.28.11.16" = [
+    {url = "https://files.pythonhosted.org/packages/ba/99/f26fed8bdb5c4154e804fc00054b8723d391d669b5b8ad051bbb76fbb8ff/types_requests-2.28.11.16-py3-none-any.whl", hash = "sha256:a86921028335fdcc3aaf676c9d3463f867db6af2303fc65aa309b13ae1e6dd53"},
+    {url = "https://files.pythonhosted.org/packages/be/a2/2c6ae1387ef81d122e5a0885427c72dae803f5fdea9f39a2f6ab2327b0f4/types-requests-2.28.11.16.tar.gz", hash = "sha256:9d4002056df7ebc4ec1f28fd701fba82c5c22549c4477116cb2656aa30ace6db"},
 ]
 "types-urllib3 1.26.25.6" = [
     {url = "https://files.pythonhosted.org/packages/7e/e5/1a3d3c92eb182f62a141e9dac4ca8ca9ad6a610b2464a59c401d8211d3b7/types-urllib3-1.26.25.6.tar.gz", hash = "sha256:35586727cbd7751acccf2c0f34a88baffc092f435ab62458f10776466590f2d5"},
@@ -2000,6 +2062,10 @@ content_hash = "sha256:08a1f5703106429ab6db8220939ef8031a963a6a800510307f378d610
 "virtualenv 20.19.0" = [
     {url = "https://files.pythonhosted.org/packages/3d/ad/906d59bbcb0e6178989cee52166a8a6651ddaea18b38e728eaac22e61cad/virtualenv-20.19.0.tar.gz", hash = "sha256:37a640ba82ed40b226599c522d411e4be5edb339a0c0de030c0dc7b646d61590"},
     {url = "https://files.pythonhosted.org/packages/51/19/6a5c76a1f622d5e72ca156345843879cfe3d13b918b40b93ef542aa2a855/virtualenv-20.19.0-py3-none-any.whl", hash = "sha256:54eb59e7352b573aa04d53f80fc9736ed0ad5143af445a1e539aada6eb947dd1"},
+]
+"wheel 0.40.0" = [
+    {url = "https://files.pythonhosted.org/packages/61/86/cc8d1ff2ca31a312a25a708c891cf9facbad4eae493b3872638db6785eb5/wheel-0.40.0-py3-none-any.whl", hash = "sha256:d236b20e7cb522daf2390fa84c55eea81c5c30190f90f29ae2ca1ad8355bf247"},
+    {url = "https://files.pythonhosted.org/packages/fc/ef/0335f7217dd1e8096a9e8383e1d472aa14717878ffe07c4772e68b6e8735/wheel-0.40.0.tar.gz", hash = "sha256:cd1196f3faee2b31968d626e1731c94f99cbdb67cf5a46e4f5656cbee7738873"},
 ]
 "wsproto 1.2.0" = [
     {url = "https://files.pythonhosted.org/packages/78/58/e860788190eba3bcce367f74d29c4675466ce8dddfba85f7827588416f01/wsproto-1.2.0-py3-none-any.whl", hash = "sha256:b9acddd652b585d75b20477888c56642fdade28bdfd3579aa24a4d2c037dd736"},

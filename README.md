@@ -389,8 +389,9 @@ Management is carried out in order to improve the psychoemotional state of the u
 
 #### Models
 
-| Model | Full name | Paper | | ------ | - | -------------------------------------------------- | | NRMS | Neural News
-Recommendation with Multi-Head Self-Attention | <https://www.aclweb.org/anthology/D19-1671/>         |
+| Model | Full name | Paper | 
+| ------ | - | -------------------------------------------------- | 
+| NRMS | Neural News Recommendation with Multi-Head Self-Attention | <https://www.aclweb.org/anthology/D19-1671/>         |
 
 ---
 

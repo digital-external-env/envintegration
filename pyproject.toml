@@ -93,6 +93,14 @@ ignore_errors = true
 [tool.bandit]
 exclude_dirs = ["tests"] #TODO почему-то это не работает
 
+
+docs = [
+    "autodocsumm ~= 0.2.10",
+    "sphinx~=5.3.0",
+    "sphinx_rtd_theme~=1.1.1",
+    "readthedocs-sphinx-search~=0.1.1",
+    ]
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 addopts = "-q --capture=tee-sys --cov --cov-report=html --cov-report=term"

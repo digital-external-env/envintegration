@@ -93,12 +93,6 @@ ignore_errors = true
 [tool.bandit]
 exclude_dirs = ["tests"] #TODO почему-то это не работает
 
-[tool.poetry.group.docs]  # This part can be left out
-optional = true
-
-[tool.poetry.group.docs.dependencies]
-autodocsumm = '*'
-
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 addopts = "-q --capture=tee-sys --cov --cov-report=html --cov-report=term"

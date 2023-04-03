@@ -39,6 +39,6 @@ jobs:
       uses: codecov/codecov-action@v3
     - name: Run pre-commit hooks
       run: |
-        pip install pre-commit
+        pip install pre-commit && pip cache purge
         pre-commit install
         pre-commit run --all-files

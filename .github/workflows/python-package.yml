@@ -40,5 +40,6 @@ jobs:
     - name: Run pre-commit hooks
       run: |
         pip install pre-commit && pip cache purge
+        rm -rf ~/.cache/pre-commit
         pre-commit install
         pre-commit run --all-files

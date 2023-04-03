@@ -18,7 +18,7 @@ repos:
     -   id: flake8
 
 -   repo: https://github.com/python/mypy
-    rev: 0.910
+    rev: 1.1.1
     hooks:
     -   id: mypy
         args: [--ignore-missing-imports, --follow-imports=silent, --strict-optional, --warn-no-return]

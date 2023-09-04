@@ -12,14 +12,12 @@ This library was created to develop solutions in the field of integrating the ex
  * **env_manage** - for controlling the parameters of the external environment
  * **digital_hygiene** - for provide filtering of negative manifestations of the physical (projected) and digital external environment of users
 
-## Demo
-[in progress]
-
-
 ## Built With
 
 * [![Python][python-shield]][python-url]
 * [![PDM][pdm-shield]][pdm-url]
+* [![Google Fit][google-fit-shield]][google-fit-url]
+* [![Yandex Smart Home][yandex-smart-home-shield]][yandex-smart-home-url]
 
 ## Requirements
 
@@ -44,44 +42,34 @@ the received token for `GoogleFitApi` using
 
   ```sh
   pip install git+ssh://github.com/digital-external-env/envintegration.git
-  ````
-  
+  ```
+  or
   ```sh
   pdm add git+ssh://github.com/digital-external-env/envintegration.git
   ```
+
 ## How to Use
-### env_manage
---------------
 
-This module contains methods for obtaining information about the smart home, smart home devices and managing these
-devices. Modules methods allow you to separately manage smart home devices using the `YandexApi` class.
-The `YandexSession`/`YandexSessionAsync` class is used to control smart speakers. The library provides convenient direct
-access to device objects that allow you to access device-accessible methods
+The Envintegration library provides a high-level API that allows you to use its capabilities in a simple way.
 
-#### Smart devices
+To use the API, follow these steps:
 
-You must create an instance of the Yandex API class by specifying in the client_token attribute a token received by
-instructions
-
+1. Import the module you need, for example:
 ```python
 from envintegration import YandexApi
-
+```
+2. Сreate an instance of the Yandex API class by specifying in the client_token attribute a token received by
+instructions
+```python
 api = YandexApi(client_token=client_token)
 ```
-###### Getting Smart Home Information
-
+3. Usage instance:
 ```python
+# Getting Smart Home Information
 api.get_smart_home_info()
 ```
-
-To simplify the operation, direct access to devices is implemented by creating an instance of the device class, and also
-to methods available for devices, obtaining properties, abilities and information about the device.
-
-(Note that all methods except set_id are asynchronous)
-
-###### Getting device information and device management
-
 ```python
+# Getting device information and device management
 my_purifer = api.purifer.set_id(device_id='')
 my_purifer.info()
 my_purifer.on_off(value=True)
@@ -89,329 +77,8 @@ my_purifer.on_off(value=True)
 my_vacuum_cleaner = api.purifer.set_id(device_id='')
 my_vacuum_cleaner.get_capabilities()
 my_vacuum_cleaner.mode(value='turbo')
-
 ```
-
-#### Yandex smart speakers
-
-You must create an instance of the YandexSession or YandexSessionAsync class by specifying the column id, obtained using
-the above methods, as well as the login and password from the Yandex account.
-
-```python
-from yandex_smart_home_api.devices import YandexSession
-
-my_station = YandexSession(login='', password='', station_id='')
-
-```
-
-In the future, examples will be discussed for the synchronous class YandexSession, all actions for asynchronous
-YandexSessionAsync is similar except that these methods must be used asynchronously. In addition, the use of a session
-is different when using an asynchronous class, so you must call the asynchronous authorization method before executing
-methods:
-
-```python
-my_station.authorize()
-```
-
-All control of the column is carried out using scripts. You can obtain default and added scripts using the method:
-
-```python
-my_station.add_scenario(scenario_name='',
-                        activation_command='',
-                        instance='',
-                        value='')
-```
-
-scenario_name - script name activation_command - voice command for script activation in Alice instance - takes the
-values of:
-
-`text_action` - to perform the action specified in the value
-
-`phrase_action` - to voice the text specified in the value
-
-`value-action` or phrase depending on the instance type
-
-To update the script, use the method:
-
-```python
-my_station.update_scenario(scenario_id='',
-                           scenario_name='',
-                           activation_command='',
-                           instance='',
-                           value='')
-```
-
-To execute the script, use the method:
-
-```python
-my_station.exec_scenario(scenario_id='')
-```
-
-To delete a script, use the method:
-
-```python
-my_station.delete_scenario(scenario_id='')
-```
-
-### Alternative smart speaker manage
-
-
-If the use of YandexSession fails on the server side, you can use the SeleniumQuasar class:
-
-```python
-from env_manage.yandex.selenium_quasar import SeleniumQuasar
-quasar = SeleniumQuasar(login='', password='')
-```
-
-This class contains the following methods:
-
-Method for authorization in yandex system
-```python
-quasar.authorization()
-```
-Method for add scenario
-```
-This method must contain an attribute 'text' or 'action'.
-Attribute 'text' using for voicing phrases
-Attribite 'action' using for add tasks
-You also must specify smart_speaker_name and scenario_name, scenario_name must be unique.
-```
-
-```python
-quasar.add_scenario(self, scenario_name: 'new_scenario', smart_speaker_name: 'Яндекс Лайт',action='Включи пылесос')
-```
-Method for execute scenario
-
-```python
-quasar.run_scenario(scenario_name='new_scenario')
-```
-Method for delete scenario
-```python
-quasar.delete_scenario(scenario_name='new_scenario')
-```
-
-## physical_hygiene
-
-This module contains methods for obtaining recommendations for filtering negative manifestations of the physical
-environment in order to increase the level of psycho-emotional state of the user.
-
-### light_mode
-
-This block contains the recommendation functions for lighting control based on the current user health indicators
-
-#### light_mode_with_stress_index
-
-This function returns a list of lighting steps (recommendations) based on stress index, sleep duration, and current time
-of day
-
-```python
-from hygiene.physical_hygiene import light_mode_with_stress_index
-from datetime import time
-
-steps = light_mode_with_stress_index(stress_index=50,
-                                     current_time=time(hour=10),
-                                     sleep_duration=time(hour=6))
-```
-return following list:
-```python
-[LightModes(step=1, duration=datetime.time(0, 30), light_temperature=2700, light_intensity=275, need_to_rest=True)]
-```
-
-#### light_mode_with_pai_and_hr
-
-This function returns a list of lighting steps (recommendations) based on activity index (cardio scores), pulse, sleep duration, and current time of day
-
-```python
-from hygiene.physical_hygiene import light_mode_with_pai_and_hr
-from datetime import time
-
-steps = light_mode_with_pai_and_hr(pai=50,
-                                   hr=100,
-                                   current_time=time(hour=10),
-                                   sleep_duration=time(hour=6))
-```
-
-return following list:
-```python
-[LightModes(step=1, duration=datetime.time(0, 30), light_temperature=2700, light_intensity=275, need_to_rest=True)]
-```
-
-### device_mode
-This block contains the functions of issuing recommendations for controlling smart home devices based on indicators of the state of the physical environment and the psycho-emotional state of the user
-
-#### stress_recommendations
-
-```python
-from hygiene.physical_hygiene import stress_recommendations
-
-recommendation = stress_recommendations(stress_index=50)
-
-```
-return text command for smart speakers:
-```python
-SmartSpeakerCommand(text='включи расслабляющую музыку')
-```
-
-
-### pes_env
-----------
-This module contains methods for obtaining information about the user's activity with [Google Fit](https://developers.google.com/fit/rest/v1/get-started?hl=en):
-- fitness bracelets
-- smart watches
-- sports applications
-
-The methods allow you to get information about user activity through the Google FIT API. Data such as height and weight,
-number of steps, sleep and sleep phases, time intervals of activity.
-
-You must create an instance of the GoogleFitApi class by specifying in the client_token attribute a token received by
-instructions
-
-```python
-class GoogleFitApi:
-    async def get_sleeps_and_phases_by_time(
-            self, start_data_time: int, end_data_time: int
-    ) -> list[dict[str, Any]]:
-        """
-        Get data about the user's sleep and sleep phase.
-        Args:
-            start_data_time (int): Sleep start time to search
-            start_data_time (int): Sleep end time to search
-        Returns:
-            list: dict of data about the user's sleep and sleep phase.
-        """
-        ...
-
-    async def get_steps_from_walks(
-            self, duration: int = GoogleFit.google_types.duration_type["7days"]
-    ) -> int:
-        """
-        Get number of steps for all walks
-        Args:
-            duration (int): Walking range
-        Returns:
-            int:Number of steps for all walks
-        """
-        ...
-
-    async def get_heights(self) -> list[dict[str, Any]]:
-        """
-        Get a list of the user's height
-        Args:
-            None
-        Returns:
-            list: dict of user's height in different records
-        """
-        ...
-
-    async def get_weights(self) -> list[dict[str, Any]]:
-        """
-        Get a list of the user's weight
-        Args:
-            None
-        Returns:
-            list: dict of user's weight in different records
-        """
-        ...
-```
-
-### pes_digenv
---------------
-This module is designed to determine the psychoemotional state of the user by exchanging text messages between people
-
-```python
-class TextEmotionApi:
-    def is_toxic(self, text: str) -> bool:
-        """
-        Identifies toxicity in a text
-        Args:
-            texr (str): text
-
-        Returns:
-            bool: True if is toxic text, False otherwise
-
-        """
-        toxic = BertPredict()
-        return bool(toxic.predict(text))
-
-    def get_mat(self, text: str) -> tuple[int, int, list[Any]]:
-        """
-        Counting swear words
-        Args:
-            text: The text to be parsed is given as str. Can be any length
-
-        Returns:
-            tuple: Returns a tuple. The first cell of which contains the number of swear words,
-                                    in the second - the percentage of swear words in the text
-                                    and in the third - a lot of swear words.
-        """
-        return count_mat_detect(text)
-
-    def emotion(self, text: str) -> dict[Any, Any]:
-        """
-        Identifies emotions in text
-
-        Args:
-            text (str): text
-
-        Returns:
-            dict: dict of emotions and their confidence
-        """
-        emo = Emotion()
-        return emo.predict(text)
-```
-
-[in progress]
-
-### digital_hygiene
--------------------
-This module controls the parameters of the user's external environment devices based on his psychoemotional state
-and data from the external physical and digital environment. 
-Management is carried out in order to improve the psychoemotional state of the user
-
-#### Usage
-
-1. Place dataset into `data` folder (the table with links below)
-
-2. Train model or download [weights](https://drive.google.com/file/d/1VL3hRUZzyV6z3jcslDKUC0XS7F_lupuw/view?usp=sharing)
-   and place them into `checkpoint` folder
-
-  ```bash
-  pdm run python train.py 
-  ```
-
-3. Predict
-
-  ```bash
-  pdm run python test.py
-  ```
-
----
-
-#### Models
-
-| Model | Full name | Paper | | ------ | - | -------------------------------------------------- | | NRMS | Neural News
-Recommendation with Multi-Head Self-Attention | <https://www.aclweb.org/anthology/D19-1671/>         |
-
----
-
-#### Datasets
-
-| Dataset     | Full name                                                                 | Paper                                              |
-| --------- | ------------------------------------------------ | -------------------------------------------------- |
-| MIND<br> + google translate (en → ru)      | A Large-scale Dataset for News Recommendation                | <https://msnews.github.io/assets/doc/ACL2020_MIND.pdf>         |
-
----
-
-#### Results
-
-| Model | News information |  AUC  |  MRR  | nDCG@5 | nDCG@10 |                 Configuration                 |
-  | :---: | :--------------: | :---: | :---: | :----: | :-----: | :-------------------------------------------: |
-| NRMS |     title       | 66.61 | 31.86 | 35.19  |  41.46  | batch size 128 <br> 4 epochs<br>lr 3e-4 |
-
----
-
-[in progress]
-
+For more details, see the [documentation](https://github.com/digital-external-env/envintegration/wiki)
 
 ## Examples
 
@@ -492,21 +159,9 @@ sleeps_and_phases_by_time = loop.run_until_complete(
     GFA.get_sleeps_and_phases_by_time(unixSleepStartTime[1], unixSleepEndTime[1]))
 ```
 
-### pes_digenv
----
-[in progress]
-
-### digital_hygiene
----
-[in progress]
-
 ## Documentation
 
-[in progress]
-
-## Contribution
-
-[in progress]
+Also, a detailed Envintegration description is available in [GitHub Wiki](https://github.com/digital-external-env/envintegration/wiki)
 
 ## Acknowledgments
 
@@ -560,3 +215,11 @@ If you have any questions or comments on the project, email the developer - wvxp
 [pdm-shield]: https://img.shields.io/badge/PDM-%202.4-purple?style=for-the-badge&logo=dpd
 
 [pdm-url]: https://pdm.fming.dev/2.4
+
+[google-fit-shield]: https://img.shields.io/badge/Google%20Fit-green?style=for-the-badge&logo=googlefit
+
+[google-fit-url]: https://developers.google.com/fit/rest
+
+[yandex-smart-home-shield]: https://img.shields.io/badge/Yandex%20Smart%20Home-red?style=for-the-badge&logo=data%3Aimage%2Fjpeg%3Bbase64%2C%2F9j%2F4AAQSkZJRgABAQAAAQABAAD%2F2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7%2F2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7%2FwAARCAAoACgDASIAAhEBAxEB%2F8QAGgAAAgMBAQAAAAAAAAAAAAAAAAgCBAUGA%2F%2FEADYQAAECAwQIAwUJAAAAAAAAAAIBAwAEEQUGEjEHExQVFiFBUTJhcSIjM0OBFzhSU3KFobHC%2F8QAGwEAAQUBAQAAAAAAAAAAAAAAAwACBAUHAQb%2FxAAmEQACAQMCBgIDAAAAAAAAAAABAgMABBEFEgYTIUFRcTFhkbHR%2F9oADAMBAAIRAxEAPwBw5%2Bcbk2kM0UiJcIAOZL2SKYSc5N%2B3PTBMivyGVpT1XrHkyDs6%2FNzjRgJtoTMqRjiEVRPEqcq8%2FwCIV5i%2Bd%2FtFmlKeW9bj1oBOuI5OtqXu5pvIXWVXkKoiURE5JTCvlGubpbfaWHQ9%2FFXmiaDLrHNWBxvUZCn5bzj1%2FPYanclnU%2BCVfxawq%2F3ECk5yT9uRmDeBM2HlrX0XpGXx5djgjjHejW59Xj13Wv5eHPHXlhzrC2v3zv7pT0pSK3UN%2BzwknFckm0L3cq3kTrypyJVTkqLVFrhTzbPeRxbQOpPwBRdJ4autQ5rtiNIwdzN0AI7e%2FwBfjLZWfONzjKmCKJCuEwLxCvZYIznAekZiUnHTAjcQWZogHCJKqeJEqtOfnlBErNeeqxdqm52u9Sr64ljD0nXEse%2Fd3zsy0w1bwVKUmxH25c%2B6d0XqOSp50WNmzy2O0X5E%2BQOkrrC965p9I1FyjjorqVYZBo1tcS2sqzQttZTkEUhnC1u8c%2FZ1tjev3ls%2BHWls%2BtpTWU%2FT1pWnKHG0YXEse4l3xs2zQ1jx0KbmyGjkwfdeyJ0HJE86rC6L97r9%2FwD8w3CZRUaVAis7Y6gkD1Wi8e6rcyxWsJbCvGrsB0yx7ms68dN0Od8Q4fXEkEQny2u0WJIOYNEjr69qeFPrBFzWaVcn5NucaQDVRIVqBjmK90imE5OSiYJ6XJ4E%2BeylUX1TNIIIVKuP4L0ecZcX7E9vraNp1utd%2BJSlcFafSkdgU5OTaYJGXJoFzfeSlPROsEEMRFXO0Yo891Ncbea5baMDJzgeB9Vcs%2BTbk2VAFUyJamZZkvdYIIIfQK%2F%2F2Q%3D%3D
+
+[yandex-smart-home-url]: https://yandex.ru/dev/dialogs/smart-home/doc/concepts/platform-quickstart.html

@@ -10,7 +10,7 @@ This library was created to develop solutions in the field of integrating the ex
  * **pes_env** - for obtaining data on the psychoemotional state of the user from the physical environment
  * **pes_digenv** - for obtaining data on the psychoemotional state of the user from the digital environment
  * **env_manage** - for controlling the parameters of the external environment
- * **digital_hygiene** - for provide filtering of negative manifestations of the physical (projected) and digital external environment of users
+ * **hygiene** - for provide filtering of negative manifestations of the physical (projected) and digital external environment of users
 
 ## Built With
 

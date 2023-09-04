@@ -1,3 +1,3 @@
-class DigHugiene:
+class DigHugieneApi:
     def something(self):
         pass

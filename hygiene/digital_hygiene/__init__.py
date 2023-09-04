@@ -1,4 +1,4 @@
-from .main import DigHugiene
+from .api import DigHugieneApi
 
 
-__all__ = ["DigHugiene"]
+__all__ = ["DigHugieneApi"]

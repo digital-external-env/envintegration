@@ -1,5 +1,5 @@
 import pickle
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 import pandas as pd
 
@@ -7,7 +7,6 @@ import pandas as pd
 # This class implements work with models for predicting sleep and the light phase in a person's sleep
 class SleepModel:
     def __init__(self):
-
         self.model_sleep = pickle.load(open("model_sleep.pkl", "rb"))
         self.columns_transform_sleep = pickle.load(
             open("columns_transform_sleep.pkl", "rb")
@@ -36,7 +35,6 @@ class SleepModel:
     #       datetime (type datetime!)- datetime of getting pulse and spo2
     # returns: class 1 or 0 - pearson sleeps ot doesn't sleep in this time
     def predict_sleep(self, pulse, spo2, date_time):
-
         row = {
             "month": date_time.month,
             "hour": date_time.hour,
@@ -54,7 +52,6 @@ class SleepModel:
         return self.model_sleep.predict(row)
 
     def create_dataframe_by_minutes(self, time_start, total_minutes):
-
         df = pd.DataFrame()
         start_min = time_start.minute
         hour = time_start.hour
@@ -62,7 +59,6 @@ class SleepModel:
         dayofweek = time_start.weekday()
 
         for i in range(total_minutes):
-
             row = {
                 "hour": hour,
                 "dayofweek": dayofweek,
@@ -86,7 +82,6 @@ class SleepModel:
     #       time_end (type datetime!) - the end sleep time
     # returns: phrases for every minute
     def predict_phases(self, time_start, time_end):
-
         total_minutes = int(abs((time_start - time_end).total_seconds()) / 60)
 
         df = self.create_dataframe_by_minutes(time_start, total_minutes)
@@ -105,7 +100,6 @@ class SleepModel:
     def find_time_waking_up(
         self, sleep_start, sleep_end, interval_start, interval_end
     ):
-
         ending = sleep_end if sleep_end >= interval_end else interval_end
 
         # find phases in every minutes

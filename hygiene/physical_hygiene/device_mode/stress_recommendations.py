@@ -2,9 +2,14 @@ from dataclasses import dataclass
 
 
 @dataclass
-class SmartSpeakerCommand:
+class Recommendation:
     text: str
 
-def stress_recommendations(stress_index: int) -> SmartSpeakerCommand:
-    if stress_index > 50:
-        return SmartSpeakerCommand(text='включи расслабляющую музыку')
+
+class SmartSpeakerCommand:
+    def __init__(self, text: str) -> None:
+        self.text = text
+
+    def stress_recommendations(self, stress_index: int) -> Recommendation:
+        if stress_index > 50:
+            return Recommendation(text="включи расслабляющую музыку")
